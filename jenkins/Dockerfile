@@ -1,9 +1,7 @@
 FROM jenkins/jenkins:alpine
 
-# Switch to root user
 USER root
 
-# Install necessary packages in one step to reduce layers and image size
 RUN apk add --no-cache \
     openjdk11 \
     bash \
@@ -12,16 +10,14 @@ RUN apk add --no-cache \
     unzip \
     openrc
 
-# Set environment variables for Gradle
+# Define Gradle environment variables
 ENV GRADLE_VERSION=7.6 \
-    GRADLE_HOME=/opt/gradle \
-    PATH=/opt/gradle/gradle-${GRADLE_VERSION}/bin:$PATH
+    GRADLE_HOME=/opt/gradle/gradle-7.6 \
+    PATH=/opt/gradle/gradle-7.6/bin:$PATH
 
-# Download and install Gradle
-RUN mkdir -p ${GRADLE_HOME} && \
+# Install Gradle and verify
+RUN mkdir -p /opt/gradle && \
     curl -fsSL https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -o /tmp/gradle.zip && \
-    unzip /tmp/gradle.zip -d ${GRADLE_HOME} && \
-    rm /tmp/gradle.zip
-
-# Verify Gradle installation
-RUN gradle -v
+    unzip /tmp/gradle.zip -d /opt/gradle && \
+    rm /tmp/gradle.zip && \
+    /opt/gradle/gradle-${GRADLE_VERSION}/bin/gradle -v
