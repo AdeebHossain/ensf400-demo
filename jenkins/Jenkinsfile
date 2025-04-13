@@ -83,8 +83,7 @@ pipeline {
         }
     }
 
-    // Runs an analysis of the code, looking for any
-    // patterns that suggest potential bugs.
+// Analyzes the code to detect patterns that may indicate potential bugs.
     stage('Static Analysis') {
         environment {
           // Override JAVA_HOME to use JDK 11 for this stage

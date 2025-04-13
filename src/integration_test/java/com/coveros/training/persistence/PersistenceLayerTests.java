@@ -1,16 +1,14 @@
 package com.coveros.training.persistence;
 
-import com.coveros.training.library.domainobjects.Book;
-import com.coveros.training.library.domainobjects.Borrower;
-import com.coveros.training.library.domainobjects.Loan;
-import com.coveros.training.authentication.domainobjects.User;
-import org.h2.jdbcx.JdbcConnectionPool;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
-import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -18,15 +16,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
+import javax.sql.DataSource;
+
+import org.h2.jdbcx.JdbcConnectionPool;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import com.coveros.training.authentication.domainobjects.User;
+import com.coveros.training.library.domainobjects.Book;
+import com.coveros.training.library.domainobjects.Borrower;
+import com.coveros.training.library.domainobjects.Loan;
 
 /**
- * Test that we have a persistence layer that we can easily mock out.
- * This exists so we can have more control over the persistence process,
- * whether we want to mock those sections, and so on.
+ * A dedicated persistence layer to allow for easier mocking and control.
+ * This abstraction provides flexibility for testing and managing how data is persisted.
  */
+
 public class PersistenceLayerTests {
 
     private final static String DEFAULT_NAME = "alice";
@@ -42,12 +48,12 @@ public class PersistenceLayerTests {
         pl = new PersistenceLayer(getFileBasedDatabaseConnectionPool());
     }
 
-    /**
-     * assert that there is a way to store a borrower
-     * in a database.  We don't actually care how this happens,
-     * we just care that it exists.  Here we're adding a
-     * brand-spanking-new borrower.
-     */
+/**
+ * Verifies that a mechanism exists for storing a borrower in the database.
+ * The implementation details are not important here—only that such functionality is available.
+ * This test adds a new borrower to the system.
+ */
+
     @Test
     public void testShouldSaveBorrowerToDatabase() {
         pl.cleanAndMigrateDatabase();
